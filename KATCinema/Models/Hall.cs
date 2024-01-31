@@ -8,5 +8,6 @@ namespace KATCinema.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public int TotalSeats { get; set; }
+        public int TotalRows { get; set; }
     }
 }
