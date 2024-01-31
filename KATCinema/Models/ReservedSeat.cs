@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KATCinema.Models
 {
@@ -6,7 +7,9 @@ namespace KATCinema.Models
     {
         [Key]
         public int Id { get; set; }
+        [ForeignKey("Reservation")]
         public int ReservationId { get; set; }
+        public Reservation Reservation { get; set; }
         public int RowNumber { get; set; }
         public int SeatNumber { get; set; }
     }
