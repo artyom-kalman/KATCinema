@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.Extensions.Hosting;
+using System.ComponentModel.DataAnnotations;
 
 namespace KATCinema.Models
 {
@@ -10,5 +11,6 @@ namespace KATCinema.Models
         public string Description { get; set; }
         public int Duration { get; set; }
         public string Poster { get; set; }
+        public List<Session> Sessions { get; set; } = new List<Session>();
     }
 }

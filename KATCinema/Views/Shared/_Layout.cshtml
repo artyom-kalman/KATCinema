@@ -6,11 +6,10 @@
     <title>@ViewData["Title"] - KATCinema</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/KATCinema.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">KATCinema</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -20,13 +19,49 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Movie" asp-action="Index">Movies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Session" asp-action="Index">Sessions</a>
                         </li>
                     </ul>
                 </div>
+                <div class="dropdown">
+                    <a
+                      data-mdb-dropdown-init
+                      class="dropdown-toggle d-flex align-items-center hidden-arrow"
+                      data-bs-toggle="dropdown"
+                      href="#"
+                      id="navbarDropdownMenuAvatar"
+                      role="button"
+                      aria-expanded="false"
+                    >
+                      <img
+                        src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                        class="rounded-circle"
+                        height="25"
+                        alt="Black and White Portrait of a Man"
+                        loading="lazy"
+                      />
+                    </a>
+                    <ul
+                      class="dropdown-menu dropdown-menu-end"
+                      aria-labelledby="navbarDropdownMenuAvatar"
+                    >
+                      <li>
+                        <a class="dropdown-item" href="#">My profile</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">Settings</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">Logout</a>
+                      </li>
+                    </ul>
+                  </div>
             </div>
         </nav>
     </header>
@@ -44,6 +79,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
