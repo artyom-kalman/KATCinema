@@ -2,6 +2,7 @@
 using KATCinema.Utils.DBConnection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace KATCinema.Controllers
 {
@@ -17,11 +18,11 @@ namespace KATCinema.Controllers
         {
             List<Session> sessions = _context.Sessions.Include(x => x.Movie).ToList();
             return View(sessions);
-        }
-        public IActionResult Detail(int moveId)
+        }   
+        public IActionResult Booking(int id)
         {
-            List<Session> sesions = _context.Sessions.Where(x => x.MovieId == moveId).ToList();
-            return View(sesions);
+            Session sesion = _context.Sessions.Include(session => session.Hall).FirstOrDefault(x => x.Id == id);
+            return View(sesion);
         }
     }
 }

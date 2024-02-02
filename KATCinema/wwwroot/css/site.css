@@ -20,3 +20,16 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.seat-row {
+    width: 100%;
+    margin: 4pt 0pt 0pt 0pt;
+}
+
+.seat-col {
+    vertical-align:central;
+    text-align: center;
+}
+.seat-plase {
+   text-align:center;
+}
