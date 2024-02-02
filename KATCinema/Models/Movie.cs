@@ -11,6 +11,6 @@ namespace KATCinema.Models
         public string Description { get; set; }
         public int Duration { get; set; }
         public string Poster { get; set; }
-        public List<Session> Sessions { get; set; } = new List<Session>();
+        public List<Session> Sessions { get; set; }
     }
 }
