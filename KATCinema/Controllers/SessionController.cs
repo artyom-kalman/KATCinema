@@ -15,7 +15,7 @@ namespace KATCinema.Controllers
         }
         public IActionResult Index()
         {
-            List<Session> sessions = _context.Sessions.Include(x => x.Movie).ToList();
+            List<Session> sessions = _context.Sessions.Include(session => session.Movie).ToList();
             return View(sessions);
         }
         public IActionResult Detail(int moveId)
