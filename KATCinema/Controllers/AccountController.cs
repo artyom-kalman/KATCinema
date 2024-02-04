@@ -61,8 +61,42 @@ namespace KATCinema.Controllers
                 TempData["Error"] = "Что-то пошло не так";
                 return View(loginViewModel);
             }
-
             return RedirectToAction("Index", "Movie");
+        }
+
+        public IActionResult Register()
+        {
+            var response = new RegisterViewModel();
+            return View(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
+        {
+            if(!ModelState.IsValid) return View(registerViewModel);
+
+            var user = await _userManager.FindByEmailAsync(registerViewModel.EmailAddress);
+            if (user != null)
+            {
+                TempData["Error"] = "Эта почта уже используется";
+                return View(registerViewModel);
+            }
+
+            var newUser = new User()
+            {
+                Email = registerViewModel.EmailAddress,
+                UserName = registerViewModel.EmailAddress
+            };
+            var newUserResponse = await _userManager.CreateAsync(newUser,registerViewModel.Password);
+            
+            return View("Profile");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index");
         }
     }
 }

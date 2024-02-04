@@ -18,7 +18,7 @@ namespace KATCinema.Controllers
         {
             List<Session> sessions = _context.Sessions.Include(session => session.Movie).ToList();
             return View(sessions);
-        }   
+        }
         public IActionResult Booking(int id)
         {
             Session sesion = _context.Sessions.Include(session => session.Hall).FirstOrDefault(x => x.Id == id);

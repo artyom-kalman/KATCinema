@@ -28,40 +28,48 @@
                             <a class="nav-link" asp-area="" asp-controller="Session" asp-action="Index">Сеансы</a>
                         </li>
                     </ul>
-                </div>
+                @if(User.Identity.IsAuthenticated)
+                {
                 <div class="dropdown">
                     <a
-                      data-mdb-dropdown-init
-                      class="dropdown-toggle d-flex align-items-center hidden-arrow"
-                      data-bs-toggle="dropdown"
-                      href="#"
-                      id="navbarDropdownMenuAvatar"
-                      role="button"
-                      aria-expanded="false"
+                        data-mdb-dropdown-init
+                        class="dropdown-toggle d-flex align-items-center hidden-arrow"
+                        data-bs-toggle="dropdown"
+                        href="#"
+                        id="navbarDropdownMenuAvatar"
+                        role="button"
+                        aria-expanded="false"
                     >
-                      <img
-                        src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-                        class="rounded-circle"
-                        height="25"
-                        alt="Black and White Portrait of a Man"
-                        loading="lazy"
-                      />
+                    @User.Identity.Name
                     </a>
                     <ul
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="navbarDropdownMenuAvatar"
+                        class="dropdown-menu dropdown-menu-end"
+                        aria-labelledby="navbarDropdownMenuAvatar"
                     >
-                      <li>
+                        <li>
                         <a class="dropdown-item" href="#">My profile</a>
-                      </li>
-                      <li>
+                        </li>
+                        <li>
                         <a class="dropdown-item" href="#">Settings</a>
-                      </li>
-                      <li>
+                        </li>
+                        <li>
                         <a class="dropdown-item" href="#">Logout</a>
-                      </li>
+                        </li>
                     </ul>
-                  </div>
+                    </div>
+                    }
+                    else
+                    {
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Войти</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register">Зрегистриоваться</a>
+                        </li>
+                    </ul>
+                    }
+                </div>
             </div>
         </nav>
     </header>
