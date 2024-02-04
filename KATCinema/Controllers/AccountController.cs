@@ -42,7 +42,7 @@ namespace KATCinema.Controllers
             // Проверка пользователя
             if (user == null)
             {
-                TempData["Error"] = "Попробуйте ещё раз";
+                TempData["Error"] = "Нет пользователя с таким email-адресом";
                 return View(loginViewModel);
             }
 
@@ -50,7 +50,7 @@ namespace KATCinema.Controllers
             var isValidPassword = await _userManager.CheckPasswordAsync(user, loginViewModel.Password);
             if (!isValidPassword)
             {
-                TempData["Error"] = "Попробуйте ещё раз";
+                TempData["Error"] = "Неверный пароль";
                 return View(loginViewModel);
             }
 
