@@ -19,7 +19,7 @@
                 @for (int j = 1; j <= seatInRow; j++)
                 {
                      <div class="col seat-col">
-                        <input type="checkbox" class="btn-check seat-place" name="seat" id="@i @j" autocomplete="off" value="@j">
+                                <input type="checkbox" class="btn-check seat-place" name="@i @j" id="@i @j" value="true">
                         <label class="btn btn-outline-primary" for="@i @j">@j</label>
                     </div>
                 }
