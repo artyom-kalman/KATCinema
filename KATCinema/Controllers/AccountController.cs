@@ -20,6 +20,12 @@ namespace KATCinema.Controllers
             _signInManager = signInManager;
             _context = context;
         }
+        public IActionResult Index()
+        {
+            if (User.Identity.IsAuthenticated)
+                return View();
+            return View("Index","Home");
+        }
 
         [HttpGet]
         public IActionResult Login()
@@ -96,7 +102,7 @@ namespace KATCinema.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Home");
         }
     }
 }
