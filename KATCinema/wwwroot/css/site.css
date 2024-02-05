@@ -48,18 +48,28 @@ ul.navbar-nav .nav-item:after {
 
 .navbar-nav .nav-item:hover:after {
     width: 100%;
-    background: #FF971E;
+    background: #0d6efd;
 }
 
 .seat-row {
     width: 100%;
-    margin: 4pt 0pt 0pt 0pt;
+    margin: 0pt 0pt 0pt 0pt;
+    text-align: center;
+    vertical-align: central;
 }
 
 .seat-col {
-    vertical-align:central;
+    vertical-align: central;
     text-align: center;
+    padding: 5px;
 }
-.seat-plase {
-   text-align:center;
+.seat-place {
+    box-sizing: content-box;
+    width: 16pt;
+    height: 16pt;
+    padding: 2pt;
+}
+ 
+.hall-view {
+    min-width: 600px;
 }

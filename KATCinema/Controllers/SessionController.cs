@@ -28,7 +28,7 @@ namespace KATCinema.Controllers
         [HttpPost]
         public IActionResult Booking(int id, bool[] seat)
         {
-            string seatChecked = "";
+            string seatChecked = User.Identity.Name+"\n";
             Session sesion = _context.Sessions.Include(session => session.Hall).FirstOrDefault(x => x.Id == id);
             int seatInRow = sesion.Hall.TotalSeats / sesion.Hall.TotalRows;
             for (int i = 1;i<=sesion.Hall.TotalRows; i++)
