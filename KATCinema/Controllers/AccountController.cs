@@ -3,6 +3,8 @@ using KATCinema.Utils.DBConnection;
 using KATCinema.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace KATCinema.Controllers
 {
@@ -22,9 +24,11 @@ namespace KATCinema.Controllers
         }
         public IActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
-                return View();
-            return View("Index","Home");
+            if (!User.Identity.IsAuthenticated)
+                return View("Home");
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            List<Reservation> reservations = _context.Reservations.Include(reservation => reservation.ReservedSeats).Include(reservation => reservation.Session).Where(reservation => reservation.UserId == userId).ToList();
+            return View(reservations);
         }
 
         [HttpGet]
@@ -103,6 +107,12 @@ namespace KATCinema.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index","Home");
+        }
+
+        public async Task<IActionResult>Reservation(int reservationId)
+        {
+            List<ReservedSeat> reservedSeats = _context.ReservedSeats.Where(reservedSeat => reservedSeat.ReservationId == reservationId).ToList();
+            return View(reservedSeats);
         }
     }
 }

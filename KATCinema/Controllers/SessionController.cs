@@ -8,7 +8,8 @@ namespace KATCinema.Controllers
 {
     public class SessionController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private ApplicationDbContext _context;
+        private IHttpContextAccessor _httpContextAccessor;
 
         public SessionController(ApplicationDbContext context)
         {
@@ -16,21 +17,27 @@ namespace KATCinema.Controllers
         }
         public IActionResult Index()
         {
-            List<Session> sessions = _context.Sessions.Include(session => session.Movie).ToList();
+            List<Session> sessions = _context.Sessions.Include(session => session.Reservations).ToList();
             return View(sessions);
         }
         [HttpGet]
         public IActionResult Booking(int id)
         {
-            Session sesion = _context.Sessions.Include(session => session.Hall).FirstOrDefault(x => x.Id == id);
+            Session sesion = _context.Sessions.Include(session => session.Reservations).Include(session => session.Hall).FirstOrDefault(x => x.Id == id);
             return View(sesion);
         }
         [HttpPost]
-        public IActionResult Booking(int id, bool[] seat)
+        public IActionResult Booking(int id, bool q)
         {
-            string seatChecked = User.Identity.Name+"\n";
             Session sesion = _context.Sessions.Include(session => session.Hall).FirstOrDefault(x => x.Id == id);
             int seatInRow = sesion.Hall.TotalSeats / sesion.Hall.TotalRows;
+            Reservation reservation = new Reservation
+            {
+                UserId = _context.Users.FirstOrDefault(user => user.UserName == User.Identity.Name).Id,
+                SessionId = id
+            };
+            _context.Reservations.AddAsync(reservation);
+            _context.SaveChanges();
             for (int i = 1;i<=sesion.Hall.TotalRows; i++)
             {
                 for (int j = 1; j <= sesion.Hall.TotalRows; j++)
@@ -38,11 +45,18 @@ namespace KATCinema.Controllers
                     string qe = Request.Form[$"{i} {j}"];
                     if (Request.Form[$"{i} {j}"] == "true")
                     {
-                        seatChecked += $"Ряд:{i} | Место {j}\n";
+                        ReservedSeat reservedSeat = new ReservedSeat
+                        {
+                            ReservationId = reservation.Id,
+                            RowNumber = i,
+                            SeatNumber = j
+                        };
+                        _context.ReservedSeats.AddAsync(reservedSeat);
+                        _context.SaveChanges();
                     }
                 }
             }
-            return Content(seatChecked);
+            return RedirectToAction("Index","Account");
         }
     }
 }

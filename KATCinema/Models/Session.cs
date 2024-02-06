@@ -15,5 +15,6 @@ namespace KATCinema.Models
         public int HallId { get; set; }
         public Hall Hall { get; set; }
         public decimal TicketPrice { get; set; }
+        public List<Reservation> Reservations { get; set; }
     }
 }
