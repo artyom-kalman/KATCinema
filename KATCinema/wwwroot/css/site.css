@@ -73,3 +73,12 @@ ul.navbar-nav .nav-item:after {
 .hall-view {
     min-width: 600px;
 }
+
+.poster {
+    aspect-ratio: 3/4;
+    max-height: 400px;
+    max-width:300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+}
