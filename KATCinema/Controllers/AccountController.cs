@@ -52,7 +52,7 @@ namespace KATCinema.Controllers
                 return View(loginViewModel);
             }
 
-            // Проверка пороля
+            // Проверка пароля
             var isValidPassword = await _userManager.CheckPasswordAsync(user, loginViewModel.Password);
             if (!isValidPassword)
             {
@@ -60,8 +60,9 @@ namespace KATCinema.Controllers
                 return View(loginViewModel);
             }
 
-            // Попытка пойти в систему
-            var signInResult = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false);
+            // Попытка войти в систему
+            var signInResult = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password,
+                isPersistent: true, lockoutOnFailure: false);
             if (!signInResult.Succeeded)
             {
                 TempData["Error"] = "Что-то пошло не так";
