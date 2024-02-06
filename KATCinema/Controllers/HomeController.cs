@@ -15,6 +15,10 @@ namespace KATCinema.Controllers
 
         public IActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             return RedirectToAction("Index", "Movie");
         }
 
