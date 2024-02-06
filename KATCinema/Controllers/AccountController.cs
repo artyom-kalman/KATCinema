@@ -71,6 +71,8 @@ namespace KATCinema.Controllers
                 TempData["Error"] = "Что-то пошло не так";
                 return View(loginViewModel);
             }
+
+            this.SignOut();
             return RedirectToAction("Index", "Movie");
         }
 
