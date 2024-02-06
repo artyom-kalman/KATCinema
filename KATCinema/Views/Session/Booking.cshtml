@@ -1,27 +1,15 @@
-﻿@model Session
+﻿@model KATCinema.Controllers.SessionController.Book
 @{
-    int seatInRow = Model.Hall.TotalSeats / Model.Hall.TotalRows;
-    List<ReservedSeat> reservedSeats = new List<ReservedSeat>();
-    foreach(Reservation reservation in Model.Reservations)
-    {
-        foreach (ReservedSeat reservedSeat in reservation.ReservedSeats)
-        {
-            reservedSeats.Add(reservedSeat);
-        }
-    }
-}
-
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+    Session session = Model.sesion;
+    List<ReservedSeat> reservedSeats = Model.reservedSeats;
+    int seatInRow = session.Hall.TotalSeats / session.Hall.TotalRows;
 }
 
 <div class="album py-5 bg-light justify-content-center hall-view">
-    <p>@Model.Hall.Name</p>
+    <p>@session.Hall.Name</p>
     <div class="container justify-content-center">
         <form method="post"> 
-        @for (int i = 1; i <= Model.Hall.TotalRows; i++)
+            @for (int i = 1; i <= session.Hall.TotalRows; i++)
         {
             <div class="row row-cols-auto justify-content-center seat-row">
                 <div class="col seat-col">@i</div>
@@ -30,7 +18,7 @@
                     if (reservedSeats.Where(x => x.RowNumber == i && x.SeatNumber == j).Count()>0)
                     {
                         <div class="col seat-col">
-                            <label class="seat-place btn btn-outline-dark" for="@i @j">@j</label>
+                            <label class="seat-place btn-outline-dark bg-dark text-white" for="@i @j">@j</label>
                         </div>   
                         
                     }
