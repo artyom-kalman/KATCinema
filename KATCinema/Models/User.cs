@@ -6,6 +6,5 @@ namespace KATCinema.Models
     // IdentityUser вроде дефолтный юзер с паролем, логином, почтой и такими вещами
     public class User : IdentityUser
     {
-        //public string Id { get; set; }
     }
 }
