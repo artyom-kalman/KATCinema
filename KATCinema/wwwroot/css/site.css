@@ -82,3 +82,7 @@ ul.navbar-nav .nav-item:after {
     margin-right: auto;
     margin-top: 10px;
 }
+
+.card-text {
+    margin: 5px
+}
