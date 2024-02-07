@@ -4,10 +4,11 @@ namespace KATCinema.ViewModels
 {
     public class LoginViewModel
     {
-        [Display(Name = "Email Address")]
+        [Display(Name = "Адрес электронной почты")]
         [Required(ErrorMessage = "Введите адрес почты")]
         public string EmailAddress { get; set; }
         [Required]
+        [Display(Name = "Пароль")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }

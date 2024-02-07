@@ -1,6 +1,8 @@
 ﻿using KATCinema.Models;
+using KATCinema.Utils;
 using KATCinema.Utils.DBConnection;
 using KATCinema.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,13 +24,12 @@ namespace KATCinema.Controllers
             _signInManager = signInManager;
             _context = context;
         }
+
+        [CustomAuthorizationFilter]
         public IActionResult Index()
         {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index","Home");
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             List<Reservation> reservations = _context.Reservations.Where(reservation => reservation.UserId == userId).
-                Include(reservation => reservation.ReservedSeats).
                 Include(reservation => reservation.Session).
                 Include(reservation => reservation.Session.Movie).
                 Include(reservation => reservation.Session.Hall).ToList();
@@ -118,10 +119,10 @@ namespace KATCinema.Controllers
             return RedirectToAction("Index","Home");
         }
 
-        public async Task<IActionResult>Reservation(int reservationId)
-        {
-            List<ReservedSeat> reservedSeats = _context.ReservedSeats.Where(reservedSeat => reservedSeat.ReservationId == reservationId).ToList();
-            return View(reservedSeats);
-        }
+        //public async Task<IActionResult>Reservation(int reservationId)
+        //{
+        //    List<ReservedSeat> reservedSeats = _context.ReservedSeats.Where(reservedSeat => reservedSeat.ReservationId == reservationId).ToList();
+        //    return View(reservedSeats);
+        //}
     }
 }

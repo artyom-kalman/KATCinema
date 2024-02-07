@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
-<body>
+<body class="bg-black">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container-fluid nav-panel">
@@ -31,44 +31,41 @@
                     <ul class="navbar-nav flex-grow-1 justify-content-end">
                         @if (User.Identity.IsAuthenticated)
                         {
-                        <li class="nav-item">
-                            <div class="dropdown">
-                                <a
-                                    data-mdb-dropdown-init
-                                    class=" nav-link dropdown-toggle d-flex align-items-center hidden-arrow"
-                                    data-bs-toggle="dropdown"
-                                    href="#"
-                                    id="navbarDropdownMenuAvatar"
-                                    role="button"
-                                    aria-expanded="false"
-                                >
-                                @User.Identity.Name
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
-                                    <li>
-                                        <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Index">Профиль</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">Settings</a>
-                                    </li>
-                                    <li>
-                                        <form  asp-area="" asp-controller="Account" asp-action="Logout">
-                                            <button class="dropdown-item text-danger">Выйти</button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                            }
-                            else
-                            {
-                            <li class="">
-                                <a class="nav-link btn btn-outline-warning text-white" asp-area="" asp-controller="Account" asp-action="Login">Войти</a>
+                            <li class="nav-item">
+                                <div class="dropdown">
+                                    <a
+                                        data-mdb-dropdown-init
+                                        class=" nav-link dropdown-toggle d-flex align-items-center hidden-arrow"
+                                        data-bs-toggle="dropdown"
+                                        href="#"
+                                        id="navbarDropdownMenuAvatar"
+                                        role="button"
+                                        aria-expanded="false"
+                                    >
+                                    @User.Identity.Name
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                                        <li>
+                                            <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Index">Профиль</a>
+                                        </li>
+                                        <li>
+                                            <form  asp-area="" asp-controller="Account" asp-action="Logout">
+                                                <button class="dropdown-item text-danger">Выйти</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
-                            <li class="">
-                                    <a class="nav-link btn btn-outline-success text-white" asp-area="" asp-controller="Account" asp-action="Register">Зарегистрироваться</a>
+                        }
+                        else
+                        {
+                            <li>
+                                <a class="nav-link btn btn-outline-warning text-white mx-1" asp-area="" asp-controller="Account" asp-action="Login">Войти</a>
                             </li>
-                            }
+                            <li>
+                                <a class="nav-link btn btn-outline-success text-white mx-1" asp-area="" asp-controller="Account" asp-action="Register">Зарегистрироваться</a>
+                             </li>
+                        }
                     </ul>
                 </div>
             </div>

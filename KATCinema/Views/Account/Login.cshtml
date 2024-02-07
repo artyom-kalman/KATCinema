@@ -17,22 +17,22 @@
             </div>
         }
         <div class="row">
-            <div class="col-md-8 offset-2">
+            <div class="col-md-8 offset-2 py-1">
                 <form asp-action="Login">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
+                    <div class="form-group py-1">
                         <label asp-for="EmailAddress" class="control-label"></label>
                         <input asp-for="EmailAddress" class="form-control">
                         <span asp-validation-for="EmailAddress" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group py-1">
                         <label asp-for="Password" class="control-label"></label>
                         <input asp-for="Password" class="form-control" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <input class="btn btn-outline-success float right" type="submit" value="Log in" />
-                        <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Profile">Cancel</a>
+                    <div class="form-group py-1">
+                        <input class="btn btn-outline-success float" type="submit" value="Войти" />
+                        <a class="btn btn-outline-danger" asp-controller="Home" asp-action="Index">Назад</a>
                     </div>
                 </form>
             </div>
