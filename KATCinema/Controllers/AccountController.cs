@@ -3,6 +3,8 @@ using KATCinema.Utils.DBConnection;
 using KATCinema.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace KATCinema.Controllers
 {
@@ -22,9 +24,14 @@ namespace KATCinema.Controllers
         }
         public IActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
-                return View();
-            return View("Index","Home");
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index","Home");
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            List<Reservation> reservations = _context.Reservations.Where(reservation => reservation.UserId == userId).
+                Include(reservation => reservation.ReservedSeats).
+                Include(reservation => reservation.Session).
+                Include(reservation => reservation.Session.Movie).ToList();
+            return View(reservations);
         }
 
         [HttpGet]
@@ -37,6 +44,8 @@ namespace KATCinema.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
+            this.SignOut();
+
             if (!ModelState.IsValid)
             {
                 return View(loginViewModel);
@@ -60,9 +69,11 @@ namespace KATCinema.Controllers
                 return View(loginViewModel);
             }
 
+
             // Попытка войти в систему
             var signInResult = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password,
                 isPersistent: true, lockoutOnFailure: false);
+                
             if (!signInResult.Succeeded)
             {
                 TempData["Error"] = "Что-то пошло не так";
@@ -96,7 +107,7 @@ namespace KATCinema.Controllers
             };
             var newUserResponse = await _userManager.CreateAsync(newUser,registerViewModel.Password);
             
-            return View("Profile");
+            return View("Index");
         }
 
         [HttpPost]
@@ -104,6 +115,12 @@ namespace KATCinema.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index","Home");
+        }
+
+        public async Task<IActionResult>Reservation(int reservationId)
+        {
+            List<ReservedSeat> reservedSeats = _context.ReservedSeats.Where(reservedSeat => reservedSeat.ReservationId == reservationId).ToList();
+            return View(reservedSeats);
         }
     }
 }

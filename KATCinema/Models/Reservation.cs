@@ -12,5 +12,6 @@ namespace KATCinema.Models
         public User User { get; set; }
         public int SessionId { get; set; }
         public Session Session { get; set; }
+        public List<ReservedSeat> ReservedSeats { get; set;} = new List<ReservedSeat>();
     }
 }

@@ -1,0 +1,32 @@
+﻿@model IEnumerable<ReservedSeat>
+@{
+    Reservation reservation = Model.First().Reservation;
+    Session session = reservation.Session;
+}
+@{
+}
+<div class="album py-5 bg-light">
+    <div class="container">
+
+        <div class="row">
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <img class="card-img-top" data-src"" alt="Постер">
+                        <div class="card-body">
+                            <h1>
+                                <div class="text-start">Бронь: @reservation.Id</div>
+                                <div class="text-end">Пользовватель: @reservation.User.UserName</div>
+                            </h1>
+                            <h2>@session.Movie.Title</h2>
+                            <h3>@session.StartTime</h3>
+                            <h4>Места:</h4>
+                            @foreach (ReservedSeat item in Model)
+                            {
+                                <h5>Ряд @item.RowNumber | Место @item.SeatNumber</h5>
+                            }
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
