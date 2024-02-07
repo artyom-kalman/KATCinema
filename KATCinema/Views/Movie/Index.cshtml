@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Movie>
 
-<div class="album py-5 bg-light">
+<div class="album py-5">
     <div class="container">
 
         <div class="row">
@@ -8,13 +8,13 @@
             @foreach(Movie item in Model)
             {
                 <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
+                    <div class="card mb-4 box-shadow bg-dark ">
                         <img class="card-img-top poster" src="@item.Poster" alt="Постер для @item.Title">
                         <div class="card-body">
-                            <p class="card-text">@item.Title</p>
+                            <p class="card-text text-white">@item.Title</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                            <a class="btn btn-sm btn-outline-secondary" asp-controller="Movie" asp-action="Detail" asp-route-id="@item.Id" >Сеансы</a>
+                                            <a class="btn btn-sm btn-outline-primary" asp-controller="Movie" asp-action="Detail" asp-route-id="@item.Id" >Сеансы</a>
                                 </div>
                                 <small class="text-muted">@item.Duration минут</small>
                             </div>

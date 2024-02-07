@@ -4,13 +4,14 @@ namespace KATCinema.ViewModels
 {
     public class RegisterViewModel
     {
-        [Display(Name = "Email Address")]
+        [Display(Name = "Адрес электронной почты")]
         [Required(ErrorMessage = "Введите адрес почты")]
         public string EmailAddress { get; set; }
         [Required]
+        [Display(Name = "Пароль")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        [Display(Name = "Confirm Password")]
+        [Display(Name = "Повторите пароль")]
         [Required(ErrorMessage = "Подтвердите пароль")]
         [DataType(DataType.Password)]
         [Compare("Password",ErrorMessage = "Пароли не совпадают")]
