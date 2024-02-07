@@ -86,3 +86,11 @@ ul.navbar-nav .nav-item:after {
 .card-text {
     margin: 5px
 }
+.card{
+    min-width: 160px;
+}
+.sesion-group {
+    border-left: 2px solid grey;
+    border-right: 2px solid grey;
+}
+.

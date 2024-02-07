@@ -2,6 +2,7 @@
 using KATCinema.Utils.DBConnection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace KATCinema.Controllers
 {
@@ -21,6 +22,14 @@ namespace KATCinema.Controllers
         public IActionResult Detail(int id)
         {
             Movie movie = _context.Movies.Include(movie => movie.Sessions).FirstOrDefault(x => x.Id == id);
+            for(int i = 0;i < movie.Sessions.Count;i++)
+            {
+                if (movie.Sessions[i].StartTime.Date < DateTime.Now.Date)
+                {
+                    movie.Sessions.Remove(movie.Sessions[i]);
+                    i--;
+                }
+            }
             //List<Session> sesions = _context.Sessions.Where(x => x.MovieId == id).ToList();
             return View(movie);
         }
