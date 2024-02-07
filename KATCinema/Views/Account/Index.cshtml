@@ -3,40 +3,25 @@
         <div class="bg-white shadow rounded overflow-hidden">
             <div class="px-4 pt-0 pb-4 bg-dark">
                 <div class="media align-items-end profile-header">
-                    <div class="profile mr-3"><img src="https://bootstrapious.com/i/snippets/sn-profile/teacher.jpg" alt="..." width="130" class="rounded mb-2 img-thumbnail"><a href="#" class="btn btn-dark btn-sm btn-block">Edit profile</a></div>
                     <div class="media-body mb-5 text-white">
-                        <h4 class="mt-0 mb-0">@User.Identity.Name</h4>
-                        <p class="small mb-4"> <i class="fa fa-map-marker mr-2"></i>San Farcisco</p>
+                        <h5 class="mt-10 mb-0">@User.Identity.Name</h5>
+                        <h1>Мои билеты</h1>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-light p-4 d-flex justify-content-end text-center">
-                <ul class="list-inline mb-0">
-                    <li class="list-inline-item">
-                        <h5 class="font-weight-bold mb-0 d-block">241</h5><small class="text-muted"> <i class="fa fa-picture-o mr-1"></i>Photos</small>
-                    </li>
-                    <li class="list-inline-item">
-                        <h5 class="font-weight-bold mb-0 d-block">84K</h5><small class="text-muted"> <i class="fa fa-user-circle-o mr-1"></i>Followers</small>
-                    </li>
-                </ul>
-            </div>
-
             <div class="py-4 px-4">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h5 class="mb-0">Recent photos</h5><a href="#" class="btn btn-link text-muted">Show all</a>
-                </div>
                 <div class="row">
                     @foreach(Reservation reservation in Model)
                     {
-                        <div class="col">
-                            <div class="card-body">
-                                <h1>
-                                    <div class="text-start">Бронь: @reservation.Id</div>
+                        <div class="col-mb-6">
+                            <div class="card-body mb-4 bg-light box-shadow">
+                                <h1 class="row">
+                                    <div class="col justify-content-start">@reservation.Session.Movie.Title</div>
+                                    <div class="col justify-content-end text-end">#@reservation.Id</div>
                                 </h1>
-                                <h2>@reservation.Session.Movie.Title</h2>
-                                <h3>@reservation.Session.StartTime</h3>
-                                <h4>Места:</h4>
+                                <h3>Сеанс: @reservation.Session.StartTime</h3>
+                                <h4>@reservation.Session.Hall.Name, Места:</h4>
 
                                 @foreach (ReservedSeat reservedSeat in reservation.ReservedSeats)
                                 {

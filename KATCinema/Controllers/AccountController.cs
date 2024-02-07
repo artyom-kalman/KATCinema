@@ -30,7 +30,8 @@ namespace KATCinema.Controllers
             List<Reservation> reservations = _context.Reservations.Where(reservation => reservation.UserId == userId).
                 Include(reservation => reservation.ReservedSeats).
                 Include(reservation => reservation.Session).
-                Include(reservation => reservation.Session.Movie).ToList();
+                Include(reservation => reservation.Session.Movie).
+                Include(reservation => reservation.Session.Hall).ToList();
             return View(reservations);
         }
 
