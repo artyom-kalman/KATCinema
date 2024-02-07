@@ -48,9 +48,8 @@ namespace KATCinema.Controllers
             _context.SaveChanges();
             for (int i = 1;i<=sesion.Hall.TotalRows; i++)
             {
-                for (int j = 1; j <= sesion.Hall.TotalRows; j++)
+                for (int j = 1; j <= seatInRow; j++)
                 {
-                    string qe = Request.Form[$"{i} {j}"];
                     if (Request.Form[$"{i} {j}"] == "true")
                     {
                         ReservedSeat reservedSeat = new ReservedSeat

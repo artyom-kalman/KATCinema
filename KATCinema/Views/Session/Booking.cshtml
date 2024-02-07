@@ -12,20 +12,20 @@
     int seatInRow = session.Hall.TotalSeats / session.Hall.TotalRows;
 }
 
-<div class="album py-5 bg-light justify-content-center hall-view">
+<div class="album py-5 bg-dark justify-content-center hall-view">
     <p>@session.Hall.Name</p>
     <div class="container justify-content-center">
         <form method="post"> 
             @for (int i = 1; i <= session.Hall.TotalRows; i++)
         {
             <div class="row row-cols-auto justify-content-center seat-row">
-                <div class="col seat-col">@i</div>
+                <div class="col seat-col text-light">@i</div>
                 @for (int j = 1; j <= seatInRow; j++)
                 {
                     if (reservedSeats.Where(x => x.RowNumber == i && x.SeatNumber == j).Count()>0)
                     {
                         <div class="col seat-col">
-                            <label class="seat-place btn-outline-dark bg-dark text-white" for="@i @j">@j</label>
+                            <label class="seat-place outline-dark bg-black text-white" for="@i @j">@j</label>
                         </div>   
                         
                     }
@@ -37,7 +37,7 @@
                         </div>
                     }
                 }
-                <div class="col seat-col">@i</div>
+                <div class="col seat-col text-light">@i</div>
             </div>
         }
         <input type="submit" class="btn btn-outline-success" value="Забронировать"></input>
