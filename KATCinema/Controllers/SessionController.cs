@@ -1,11 +1,14 @@
 ﻿using KATCinema.Models;
+using KATCinema.Utils;
 using KATCinema.Utils.DBConnection;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace KATCinema.Controllers
 {
+   [CustomAuthorizationFilter]
     public class SessionController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,6 +28,7 @@ namespace KATCinema.Controllers
             Session sesion = _context.Sessions.Include(session => session.Hall).FirstOrDefault(x => x.Id == id);
             return View(sesion);
         }
+
         [HttpPost]
         public IActionResult Booking(int id, bool[] seat)
         {
