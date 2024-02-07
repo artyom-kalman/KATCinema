@@ -3,19 +3,19 @@
         <div class="bg-white shadow rounded overflow-hidden">
             <div class="px-4 pt-0 pb-4 bg-dark">
                 <div class="media align-items-end profile-header">
-                    <div class="media-body mb-5 text-white">
-                        <h5 class="mt-10 mb-0">@User.Identity.Name</h5>
+                    <div class="media-body pt-5 mb-5 text-white">
+                        <h5 class="mt-0 mb-0">@User.Identity.Name</h5>
                         <h1>Мои билеты</h1>
                     </div>
                 </div>
             </div>
 
-            <div class="py-4 px-4">
+            <div class="py-4 px-4 bg-light">
                 <div class="row">
                     @foreach(Reservation reservation in Model)
                     {
-                        <div class="col-mb-6">
-                            <div class="card-body mb-4 bg-light box-shadow">
+                         <div class="col-mb-6">
+                            <div class="card-body mb-4 bg-gray box-shadow text-light">
                                 <h1 class="row">
                                     <div class="col justify-content-start">@reservation.Session.Movie.Title</div>
                                     <div class="col justify-content-end text-end">#@reservation.Id</div>
