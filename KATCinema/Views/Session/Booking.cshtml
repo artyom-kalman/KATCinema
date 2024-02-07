@@ -1,7 +1,14 @@
-﻿@model KATCinema.Controllers.SessionController.Book
+﻿@model Session
 @{
-    Session session = Model.sesion;
-    List<ReservedSeat> reservedSeats = Model.reservedSeats;
+    Session session = Model;
+    List<ReservedSeat> reservedSeats = new List<ReservedSeat>();
+    foreach(Reservation reservation in session.Reservations)
+    {
+        foreach (ReservedSeat reservedSeat in reservation.ReservedSeats)
+        {
+            reservedSeats.Add(reservedSeat);
+        }
+    }
     int seatInRow = session.Hall.TotalSeats / session.Hall.TotalRows;
 }
 

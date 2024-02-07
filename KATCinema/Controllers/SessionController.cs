@@ -8,15 +8,6 @@ namespace KATCinema.Controllers
 {
     public class SessionController : Controller
     {
-        public class Book
-        {
-            public Session sesion;
-            public List<ReservedSeat> reservedSeats;
-            public Book(Session ses, List<ReservedSeat> res) {
-                sesion = ses;
-                reservedSeats = res;
-            }
-        }
         private ApplicationDbContext _context;
         private IHttpContextAccessor _httpContextAccessor;
 
@@ -32,10 +23,12 @@ namespace KATCinema.Controllers
         [HttpGet]
         public IActionResult Booking(int id)
         {
-            Session session = _context.Sessions.Include(session => session.Reservations).Include(session => session.Hall).FirstOrDefault(x => x.Id == id);
-            List<ReservedSeat> reservedSeats = _context.ReservedSeats.Where(reservedSeat => session.Reservations.Contains(reservedSeat.Reservation)).ToList();
-            Book book = new Book(session, reservedSeats);
-            return View(book);
+            Session session = _context.Sessions.
+                Include(session => session.Movie).
+                Include(session => session.Hall).
+                Include(session => session.Reservations).
+                ThenInclude(reservation => reservation.ReservedSeats).FirstOrDefault(x => x.Id == id);
+            return View(session);
         }
         [HttpPost]
         public IActionResult Booking(int id, bool q)

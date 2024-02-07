@@ -25,9 +25,12 @@ namespace KATCinema.Controllers
         public IActionResult Index()
         {
             if (!User.Identity.IsAuthenticated)
-                return View("Home");
+                return RedirectToAction("Index","Home");
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            List<Reservation> reservations = _context.Reservations.Include(reservation => reservation.ReservedSeats).Include(reservation => reservation.Session).Where(reservation => reservation.UserId == userId).ToList();
+            List<Reservation> reservations = _context.Reservations.Where(reservation => reservation.UserId == userId).
+                Include(reservation => reservation.ReservedSeats).
+                Include(reservation => reservation.Session).
+                Include(reservation => reservation.Session.Movie).ToList();
             return View(reservations);
         }
 
@@ -41,6 +44,8 @@ namespace KATCinema.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
+            this.SignOut();
+
             if (!ModelState.IsValid)
             {
                 return View(loginViewModel);
@@ -65,7 +70,7 @@ namespace KATCinema.Controllers
             }
 
             // Попытка пойти в систему
-            var signInResult = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false);
+            var signInResult = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password,false, false);
             if (!signInResult.Succeeded)
             {
                 TempData["Error"] = "Что-то пошло не так";
@@ -99,7 +104,7 @@ namespace KATCinema.Controllers
             };
             var newUserResponse = await _userManager.CreateAsync(newUser,registerViewModel.Password);
             
-            return View("Profile");
+            return View("Index");
         }
 
         [HttpPost]
