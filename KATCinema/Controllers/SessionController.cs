@@ -39,29 +39,36 @@ namespace KATCinema.Controllers
         {
             Session sesion = _context.Sessions.Include(session => session.Hall).FirstOrDefault(x => x.Id == id);
             int seatInRow = sesion.Hall.TotalSeats / sesion.Hall.TotalRows;
+            List<ReservedSeat> reservedSeats = new List<ReservedSeat>();
             Reservation reservation = new Reservation
             {
                 UserId = _context.Users.FirstOrDefault(user => user.UserName == User.Identity.Name).Id,
                 SessionId = id
             };
-            _context.Reservations.AddAsync(reservation);
-            _context.SaveChanges();
-            for (int i = 1;i<=sesion.Hall.TotalRows; i++)
+            for (int i = 1; i <= sesion.Hall.TotalRows; i++)
             {
                 for (int j = 1; j <= seatInRow; j++)
                 {
                     if (Request.Form[$"{i} {j}"] == "true")
                     {
-                        ReservedSeat reservedSeat = new ReservedSeat
+                        reservedSeats.Add(new ReservedSeat
                         {
-                            ReservationId = reservation.Id,
                             RowNumber = i,
                             SeatNumber = j
-                        };
-                        _context.ReservedSeats.AddAsync(reservedSeat);
-                        _context.SaveChanges();
+                        });
                     }
                 }
+            }
+            if(reservedSeats.Count > 0)
+            {
+                _context.Reservations.AddAsync(reservation);
+                _context.SaveChanges();
+                foreach(ReservedSeat se in reservedSeats)
+                {
+                    se.ReservationId = reservation.Id;
+                    _context.ReservedSeats.AddAsync(se);
+                }
+                _context.SaveChanges();
             }
             return RedirectToAction("Index","Account");
         }
