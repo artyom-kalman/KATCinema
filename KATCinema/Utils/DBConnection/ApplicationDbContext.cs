@@ -17,5 +17,7 @@ namespace KATCinema.Utils.DBConnection
         public DbSet<ReservedSeat> ReservedSeats { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<User> Users{ get; set; }
+        public DbSet<Row> Rows { get; set; }
+        public DbSet<Seat> Seats { get; set; }
     }                                         
 }
