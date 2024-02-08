@@ -110,8 +110,18 @@ namespace KATCinema.Controllers
                 UserName = registerViewModel.EmailAddress
             };
             var newUserResponse = await _userManager.CreateAsync(newUser,registerViewModel.Password);
-            
-            return View("Index");
+
+            // Попытка войти в систему
+            var signInResult = await _signInManager.PasswordSignInAsync(registerViewModel.EmailAddress, registerViewModel.Password,
+                isPersistent: true, lockoutOnFailure: false);
+
+            if (!signInResult.Succeeded)
+            {
+                TempData["Error"] = "Что-то пошло не так";
+                return View(registerViewModel);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
