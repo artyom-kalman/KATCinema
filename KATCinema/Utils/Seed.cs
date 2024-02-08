@@ -14,11 +14,13 @@ namespace KATCinema.Data
             
             context.Database.EnsureCreated();
 
+            var rowCount = 0;
             // Hall 1
             for (int i = 1; i <= 7; i++)
             {
                 var newRow = new Row()
                 {
+                    Id = ++rowCount,
                     HallId = 1,
                     RowNumber = i
                 };
@@ -39,7 +41,7 @@ namespace KATCinema.Data
                     var newSeat = new Seat()
                     {
                         SeatNumber = j,
-                        RowId = i
+                        RowId = newRow.Id
                     };
                     context.Seats.Add(newSeat);
                 }
@@ -50,6 +52,7 @@ namespace KATCinema.Data
             {
                 var newRow = new Row()
                 {
+                    Id = ++rowCount,
                     HallId = 2,
                     RowNumber = i
                 };
@@ -70,7 +73,7 @@ namespace KATCinema.Data
                     var newSeat = new Seat()
                     {
                         SeatNumber = j,
-                        RowId = i
+                        RowId = newRow.Id
                     };
                     context.Seats.Add(newSeat);
                 }
@@ -81,6 +84,7 @@ namespace KATCinema.Data
             {
                 var newRow = new Row()
                 {
+                    Id = ++rowCount,
                     HallId = 3,
                     RowNumber = i
                 };
@@ -101,7 +105,7 @@ namespace KATCinema.Data
                     var newSeat = new Seat()
                     {
                         SeatNumber = j,
-                        RowId = i
+                        RowId = newRow.Id
                     };
                     context.Seats.Add(newSeat);
                 }
