@@ -11,9 +11,11 @@
 }
 
 <div class="album py-5 bg-dark text-white justify-content-center hall-view">
-    <h1>@Model.Movie.Title</h1>
-    <h3>Сеанс: @Model.StartTime</h3>
-    <h4>@Model.Hall.Name</h4>
+    <div class="mx-5 mb-5">
+        <h1>@Model.Movie.Title</h1>
+        <h3>Сеанс: @Model.StartTime</h3>
+        <h4>@Model.Hall.Name</h4>
+    </div>
     <div class="container justify-content-center">
         <form method="post"> 
             @foreach(Row row in Model.Hall.Rows)
@@ -32,7 +34,7 @@
                             else
                             {
                                 <div class="col seat-col">
-                                    <input type="checkbox" class="btn-check" name="@seat.Id" id="@seat.Id" value="true">
+                                        <input type="checkbox" class="btn-check" name="@seat.Id" id="@seat.Id" value="true" onchange="document.getElementById('booking').disabled = !this.checked;">
                                     <label class="seat-place btn btn-outline-primary" for="@seat.Id">@seat.SeatNumber</label>
                                 </div>
                             }
@@ -40,7 +42,7 @@
                     <div class="col seat-col text-light">@row.RowNumber</div>
                 </div>
             }
-        <input type="submit" class="btn btn-outline-success" value="Забронировать"></input>
+        <input type="submit" class="btn btn-outline-success justify-content-center mt-5" disabled id="booking" value="Забронировать"></input>
         </form>
     </div>
 </div>
