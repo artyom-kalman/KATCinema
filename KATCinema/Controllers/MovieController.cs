@@ -22,6 +22,7 @@ namespace KATCinema.Controllers
         public IActionResult Detail(int id)
         {
             Movie movie = _context.Movies.Include(movie => movie.Sessions).FirstOrDefault(x => x.Id == id);
+            movie.Sessions.RemoveAll(session => session.Id == id);
             for(int i = 0;i < movie.Sessions.Count;i++)
             {
                 if (movie.Sessions[i].StartTime.Date < DateTime.Now.Date)
@@ -30,7 +31,6 @@ namespace KATCinema.Controllers
                     i--;
                 }
             }
-            //List<Session> sesions = _context.Sessions.Where(x => x.MovieId == id).ToList();
             return View(movie);
         }
     }

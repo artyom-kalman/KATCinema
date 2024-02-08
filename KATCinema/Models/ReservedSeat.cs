@@ -10,6 +10,8 @@ namespace KATCinema.Models
         [ForeignKey("Reservation")]
         public int ReservationId { get; set; }
         public Reservation Reservation { get; set; }
+        public int RowNumber { get; set; }
+        public int SeatNumber { get; set; }
         [ForeignKey("Seat")]
         public int SeatId { get; set; }
         public Seat Seat { get; set; }

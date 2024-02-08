@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KATCinema.Models
 {
     public class Row
     {
+        [Key]
         public int Id { get; set; }
         [ForeignKey("Hall")]
         public int HallId { get; set; }
