@@ -29,6 +29,8 @@ namespace KATCinema.Controllers
             Session session = _context.Sessions.
                 Include(session => session.Movie).
                 Include(session => session.Hall).
+                Include(session => session.Hall.Rows).
+                ThenInclude(row => row.Seats).
                 Include(session => session.Reservations).
                 ThenInclude(reservation => reservation.ReservedSeats).FirstOrDefault(x => x.Id == id);
             return View(session);
@@ -37,31 +39,41 @@ namespace KATCinema.Controllers
         [HttpPost]
         public IActionResult Booking(int id, bool q)
         {
-            Session sesion = _context.Sessions.Include(session => session.Hall).FirstOrDefault(x => x.Id == id);
-            int seatInRow = sesion.Hall.TotalSeats / sesion.Hall.TotalRows;
-            Reservation reservation = new Reservation
+            Session sesion = _context.Sessions.
+                Include(session => session.Hall).
+                Include(session => session.Hall.Rows).
+                ThenInclude(row => row.Seats).FirstOrDefault(x => x.Id == id);
+            List<ReservedSeat> reservedSeats= new List<ReservedSeat>();
+            foreach(Row row in sesion.Hall.Rows)
             {
-                UserId = _context.Users.FirstOrDefault(user => user.UserName == User.Identity.Name).Id,
-                SessionId = id
-            };
-            _context.Reservations.AddAsync(reservation);
-            _context.SaveChanges();
-            for (int i = 1;i<=sesion.Hall.TotalRows; i++)
-            {
-                for (int j = 1; j <= seatInRow; j++)
+                foreach(Seat seat in row.Seats)
                 {
-                    if (Request.Form[$"{i} {j}"] == "true")
+                    if (Request.Form[$"{seat.Id}"] == "true")
                     {
-                        ReservedSeat reservedSeat = new ReservedSeat
-                        {
-                            ReservationId = reservation.Id,
-                            RowNumber = i,
-                            SeatNumber = j
-                        };
-                        _context.ReservedSeats.AddAsync(reservedSeat);
-                        _context.SaveChanges();
+                        reservedSeats.Add
+                        (new ReservedSeat{
+                            SeatId = seat.Id,
+                            SeatNumber = 1,
+                            RowNumber =1
+                        });
                     }
                 }
+            }
+            if (reservedSeats.Count > 0)
+            {
+                Reservation reservation = new Reservation
+                {
+                    UserId = _context.Users.FirstOrDefault(user => user.UserName == User.Identity.Name).Id,
+                    SessionId = id
+                };
+                _context.Reservations.AddAsync(reservation);
+                _context.SaveChanges();
+                foreach (ReservedSeat reservedSeat in reservedSeats)
+                {
+                    reservedSeat.ReservationId = reservation.Id;
+                    _context.ReservedSeats.AddAsync(reservedSeat);
+                }
+                _context.SaveChanges();
             }
             return RedirectToAction("Index","Account");
         }
