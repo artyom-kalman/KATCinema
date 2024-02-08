@@ -50,6 +50,7 @@ if (!app.Environment.IsDevelopment())
 // Seed
 //await Seed.SeedUsersAndRolesAsync(app);
 //await Seed.SeedHalls(app);
+//await Seed.SeesSessions(app);
 
 
 
