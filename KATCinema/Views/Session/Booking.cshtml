@@ -9,7 +9,18 @@
         }
     }
 }
-
+<script> 
+    let chekNum = 0;
+    function chek(b)
+    {
+        console.log(b);
+        if(b) chekNum++;
+        else chekNum--;
+        if(chekNum == 0) document.getElementById('booking').disabled = true;
+        else document.getElementById('booking').disabled = false;
+        console.log(chekNum);
+    }
+</script>
 <div class="album py-5 bg-dark text-white justify-content-center hall-view">
     <div class="mx-5 mb-5">
         <h1>@Model.Movie.Title</h1>
@@ -34,7 +45,7 @@
                             else
                             {
                                 <div class="col seat-col">
-                                        <input type="checkbox" class="btn-check" name="@seat.Id" id="@seat.Id" value="true" onchange="document.getElementById('booking').disabled = !this.checked;">
+                                        <input type="checkbox" class="btn-check" name="@seat.Id" id="@seat.Id" value="true" onchange="chek(this.checвked)">
                                     <label class="seat-place btn btn-outline-primary" for="@seat.Id">@seat.SeatNumber</label>
                                 </div>
                             }
