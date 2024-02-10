@@ -24,7 +24,7 @@ namespace KATCinema.Controllers
             Movie movie = _context.Movies.Include(movie => movie.Sessions).FirstOrDefault(x => x.Id == id);
             movie.Sessions.RemoveAll(session => session.Id == id);
             for(int i = 0;i < movie.Sessions.Count;i++)
-            {
+            { 
                 if (movie.Sessions[i].StartTime.Date < DateTime.Now.Date)
                 {
                     movie.Sessions.Remove(movie.Sessions[i]);

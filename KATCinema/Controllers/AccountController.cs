@@ -33,7 +33,9 @@ namespace KATCinema.Controllers
                 Include(reservation => reservation.Session).
                 Include(reservation => reservation.Session.Movie).
                 Include(reservation => reservation.Session.Hall).
-                Include(reservation => reservation.ReservedSeats).ToList();
+                Include(reservation => reservation.ReservedSeats).
+                ThenInclude(reservedSeat => reservedSeat.Seat.Row).ToList();
+
             reservations.Reverse();
             return View(reservations);
         }

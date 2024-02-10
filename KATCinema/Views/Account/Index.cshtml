@@ -25,7 +25,7 @@
 
                                 @foreach (ReservedSeat reservedSeat in reservation.ReservedSeats)
                                 {
-                                    <h5>Ряд @reservedSeat.RowNumber | Место @reservedSeat.SeatNumber</h5>
+                                    <h5>Ряд @reservedSeat.Seat.Row.RowNumber | Место @reservedSeat.Seat.SeatNumber </h5>
                                 }
                             </div>
                         </div>

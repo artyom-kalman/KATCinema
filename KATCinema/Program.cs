@@ -47,8 +47,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-// Seeding users and roles
+// Seed
 //await Seed.SeedUsersAndRolesAsync(app);
+//await Seed.SeedHalls(app);
+//await Seed.SeesSessions(app);
 
 
 

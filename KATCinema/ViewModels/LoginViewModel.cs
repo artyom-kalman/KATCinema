@@ -6,7 +6,9 @@ namespace KATCinema.ViewModels
     {
         [Display(Name = "Адрес электронной почты")]
         [Required(ErrorMessage = "Введите адрес почты")]
+        [EmailAddress]
         public string EmailAddress { get; set; }
+
         [Required]
         [Display(Name = "Пароль")]
         [DataType(DataType.Password)]

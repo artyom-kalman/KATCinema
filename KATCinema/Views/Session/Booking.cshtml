@@ -1,46 +1,59 @@
 ﻿@model Session
 @{
-    Session session = Model;
-    List<ReservedSeat> reservedSeats = new List<ReservedSeat>();
-    foreach(Reservation reservation in session.Reservations)
+    List<Seat> reservedSeats = new List<Seat>();
+    foreach(Reservation reservation in Model.Reservations)
     {
         foreach (ReservedSeat reservedSeat in reservation.ReservedSeats)
         {
-            reservedSeats.Add(reservedSeat);
+            reservedSeats.Add(reservedSeat.Seat);
         }
     }
-    int seatInRow = session.Hall.TotalSeats / session.Hall.TotalRows;
 }
-
-<div class="album py-5 bg-dark justify-content-center hall-view">
-    <p>@session.Hall.Name</p>
+<script> 
+    let chekNum = 0;
+    function chek(b)
+    {
+        console.log(b);
+        if(b) chekNum++;
+        else chekNum--;
+        if(chekNum == 0) document.getElementById('booking').disabled = true;
+        else document.getElementById('booking').disabled = false;
+        console.log(chekNum);
+    }
+</script>
+<div class="album py-5 bg-dark text-white justify-content-center hall-view">
+    <div class="mx-5 mb-5">
+        <h1>@Model.Movie.Title</h1>
+        <h3>Сеанс: @Model.StartTime</h3>
+        <h4>@Model.Hall.Name</h4>
+    </div>
     <div class="container justify-content-center">
         <form method="post"> 
-            @for (int i = 1; i <= session.Hall.TotalRows; i++)
-        {
-            <div class="row row-cols-auto justify-content-center seat-row">
-                <div class="col seat-col text-light">@i</div>
-                @for (int j = 1; j <= seatInRow; j++)
-                {
-                    if (reservedSeats.Where(x => x.RowNumber == i && x.SeatNumber == j).Count()>0)
-                    {
-                        <div class="col seat-col">
-                            <label class="seat-place outline-dark bg-black text-white" for="@i @j">@j</label>
-                        </div>   
+            @foreach(Row row in Model.Hall.Rows)
+            {
+                <div class="row row-cols-auto justify-content-center seat-row">
+                    <div class="col seat-col text-light">@row.RowNumber</div>
+                        @foreach(Seat seat in row.Seats)
+                        {
+                            if (reservedSeats.Contains(seat))
+                            {
+                                <div class="col seat-col">
+                                    <label class="seat-place outline-dark bg-black text-white">@seat.SeatNumber</label>
+                                </div>   
                         
-                    }
-                    else
-                    {
-                        <div class="col seat-col">
-                            <input type="checkbox" class="btn-check" name="@i @j" id="@i @j" value="true">
-                            <label class="seat-place btn btn-outline-primary" for="@i @j">@j</label>
-                        </div>
-                    }
-                }
-                <div class="col seat-col text-light">@i</div>
-            </div>
-        }
-        <input type="submit" class="btn btn-outline-success" value="Забронировать"></input>
+                            }
+                            else
+                            {
+                                <div class="col seat-col">
+                                        <input type="checkbox" class="btn-check" name="@seat.Id" id="@seat.Id" value="true" onchange="chek(this.checвked)">
+                                    <label class="seat-place btn btn-outline-primary" for="@seat.Id">@seat.SeatNumber</label>
+                                </div>
+                            }
+                        }
+                    <div class="col seat-col text-light">@row.RowNumber</div>
+                </div>
+            }
+        <input type="submit" class="btn btn-outline-success justify-content-center mt-5" disabled id="booking" value="Забронировать"></input>
         </form>
     </div>
 </div>

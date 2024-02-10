@@ -7,6 +7,140 @@ namespace KATCinema.Data
 {
     public class Seed
     {
+        public static async Task SeesSessions(IApplicationBuilder applicationBuilder)
+        {
+            var serviceScope = applicationBuilder.ApplicationServices.CreateScope();
+            var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+
+            context.Database.EnsureCreated();
+
+            var rnd = new Random();
+            var prices = new decimal[] { 250.00M, 300.00M, 500.00M, 200.00M };
+
+            for (int i = 0; i < 20; i++)
+            {
+                var startTime = DateTime.Now.Date.AddDays(rnd.Next(8));
+                startTime += new TimeSpan(rnd.Next(8, 25), 0, 0);
+                Console.WriteLine(startTime);
+                var newSession = new Session()
+                {
+                    HallId = rnd.Next(1, 4),
+                    MovieId = rnd.Next(1, 7),
+                    StartTime = startTime.ToUniversalTime(),
+                    TicketPrice = prices[rnd.Next(4)]
+                };
+                context.Sessions.Add(newSession);
+            }
+            context.SaveChanges();
+        }
+
+        public static async Task SeedHalls(IApplicationBuilder applicationBuilder)
+        {
+            var serviceScope = applicationBuilder.ApplicationServices.CreateScope();
+            var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+            
+            context.Database.EnsureCreated();
+
+            var rowCount = 0;
+            // Hall 1
+            for (int i = 1; i <= 7; i++)
+            {
+                var newRow = new Row()
+                {
+                    Id = ++rowCount,
+                    HallId = 1,
+                    RowNumber = i
+                };
+                context.Rows.Add(newRow);
+
+                var numberOfSeats = 10;
+                if (i <= 2)
+                {
+                    numberOfSeats = 8;
+                }
+                else if (i >= 5)
+                {
+                    numberOfSeats = 12;
+                }
+
+                for (int j = 1; j <= numberOfSeats; j++)
+                {
+                    var newSeat = new Seat()
+                    {
+                        SeatNumber = j,
+                        RowId = newRow.Id
+                    };
+                    context.Seats.Add(newSeat);
+                }
+            }
+
+            // Hall 2
+            for (int i = 1; i <= 12; i++)
+            {
+                var newRow = new Row()
+                {
+                    Id = ++rowCount,
+                    HallId = 2,
+                    RowNumber = i
+                };
+                context.Rows.Add(newRow);
+
+                var numberOfSeats = 15;
+                if (i <= 3)
+                {
+                    numberOfSeats = 12;
+                }
+                else if (i >= 11)
+                {
+                    numberOfSeats = 12;
+                }
+
+                for (int j = 1; j <= numberOfSeats; j++)
+                {
+                    var newSeat = new Seat()
+                    {
+                        SeatNumber = j,
+                        RowId = newRow.Id
+                    };
+                    context.Seats.Add(newSeat);
+                }
+            }
+
+            // Hall 3
+            for (int i = 1; i <= 20; i++)
+            {
+                var newRow = new Row()
+                {
+                    Id = ++rowCount,
+                    HallId = 3,
+                    RowNumber = i
+                };
+                context.Rows.Add(newRow);
+
+                var numberOfSeats = 20;
+                if (i <= 4)
+                {
+                    numberOfSeats = 16;
+                }
+                else if (i >= 17)
+                {
+                    numberOfSeats = 24;
+                }
+
+                for (int j = 1; j <= numberOfSeats; j++)
+                {
+                    var newSeat = new Seat()
+                    {
+                        SeatNumber = j,
+                        RowId = newRow.Id
+                    };
+                    context.Seats.Add(newSeat);
+                }
+            }
+
+            context.SaveChanges();
+        }
+
         public static async Task SeedUsersAndRolesAsync(IApplicationBuilder applicationBuilder)
         {
             var serviceScope = applicationBuilder.ApplicationServices.CreateScope();
