@@ -93,4 +93,13 @@ ul.navbar-nav .nav-item:after {
     border-left: 2px solid grey;
     border-right: 2px solid grey;
 }
+
+.mini-poster {
+    aspect-ratio: 3/4;
+    max-height: 200px;
+    max-width: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+}
 .
