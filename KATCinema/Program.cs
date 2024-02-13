@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using KATCinema.Utils.ImageKitService;
+using KATCinema.Interfaces;
+using KATCinema.Utils.ImageKitHelper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +34,7 @@ builder.Services.AddIdentity<User, IdentityRole>(
     })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 // ImageKitService config.
+builder.Services.AddScoped<IPhotoService, ImageKitService>();
 builder.Services.Configure<ImageKitSettings>(builder.Configuration.GetSection("ImageKitSettings"));
 // Sessions and coockies config
 builder.Services.AddMemoryCache();

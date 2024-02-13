@@ -2,6 +2,6 @@
 {
     public interface IPhotoService
     {
-        Task<string> UploadPhotoAsync(string path);
+        Task<string> UploadPhotoAsync(IFormFile file);
     }
 }

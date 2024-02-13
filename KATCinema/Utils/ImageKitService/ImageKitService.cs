@@ -1,4 +1,6 @@
-﻿using Imagekit;
+﻿using Humanizer.Bytes;
+using Imagekit;
+using Imagekit.Models;
 using Imagekit.Sdk;
 using KATCinema.Interfaces;
 using KATCinema.Utils.ImageKitService;
@@ -19,7 +21,7 @@ namespace KATCinema.Utils.ImageKitHelper
             );
         }
 
-        public async Task<string> UploadPhotoAsync(string path)
+        public async Task<string> UploadPhotoAsync(IFormFile file)
         {
             Transformation trans = new Transformation()
                 .Width(400)
@@ -32,22 +34,26 @@ namespace KATCinema.Utils.ImageKitHelper
                 .Format("jpeg")
                 .Raw("h-200,w-300,l-image,i-logo.png,l-end");
 
-            byte[] bytes = File.ReadAllBytes(path);
+            var fileStream = file.OpenReadStream();
+            var memoryStream = new MemoryStream();
+            fileStream.CopyTo(memoryStream);
+            var bytes = memoryStream.ToArray();
 
-            FileCreateRequest ob = new FileCreateRequest
+            var fileCreateRequest = new FileCreateRequest
             {
                 file = bytes,
-                fileName = Guid.NewGuid().ToString()
+                fileName = file.FileName
             };
-            Result resp =  await _imagekit.UploadAsync(ob);
+            Result resp =  await _imagekit.UploadAsync(fileCreateRequest);
 
             string imageURL = _imagekit
                 .Url(trans)
                 .Src(resp.url)
-                .TransformationPosition("query")
                 .Generate();
 
-            return imageURL;
+            Console.WriteLine(imageURL);
+
+            return resp.url;
         }
     }
 }
