@@ -62,14 +62,17 @@ namespace KATCinema.Controllers
                 return View(movieViewModel);
             }
 
-            var posterUrl = await _photoService.UploadPhotoAsync(movieViewModel.Poster);
+            var posterUploadResult = await _photoService.UploadPhotoAsync(movieViewModel.Poster);
+            var posterUrl = posterUploadResult.url;
+            var posterId = posterUploadResult.fileId;
 
             var newMovie = new Movie()
             {
                 Title = movieViewModel.Title,
                 Description = movieViewModel.Description,
                 Duration = movieViewModel.Duration,
-                Poster = posterUrl,
+                PosterUrl = posterUrl,
+                PosterId = posterId
             };
 
             _context.Movies.Add(newMovie);
@@ -156,6 +159,16 @@ namespace KATCinema.Controllers
             if (movie != null)
             {
                 _context.Movies.Remove(movie);
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var deletePosterResult = await _photoService.DeletePhotoAsync(movie.PosterId);
+            if (!deletePosterResult)
+            {
+                return View();
             }
 
             await _context.SaveChangesAsync();

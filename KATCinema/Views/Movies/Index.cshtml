@@ -22,7 +22,10 @@
                 @Html.DisplayNameFor(model => model.Duration)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Poster)
+                @Html.DisplayNameFor(model => model.PosterUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PosterId)
             </th>
             <th></th>
         </tr>
@@ -40,7 +43,10 @@
                 @Html.DisplayFor(modelItem => item.Duration)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Poster)
+                @Html.DisplayFor(modelItem => item.PosterUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PosterId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -10,7 +10,8 @@ namespace KATCinema.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public int Duration { get; set; }
-        public string Poster { get; set; }
+        public string PosterUrl { get; set; }
+        public string PosterId { get; set; }
         public List<Session> Sessions { get; set; }
     }
 }
