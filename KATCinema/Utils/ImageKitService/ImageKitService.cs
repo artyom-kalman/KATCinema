@@ -21,19 +21,8 @@ namespace KATCinema.Utils.ImageKitHelper
             );
         }
 
-        public async Task<string> UploadPhotoAsync(IFormFile file)
+        public async Task<Result> UploadPhotoAsync(IFormFile file)
         {
-            Transformation trans = new Transformation()
-                .Width(400)
-                .Height(300)
-                .AspectRatio("4-3")
-                .Quality(100)
-                .Crop("force")
-                .CropMode("extract")
-                .Focus("left")
-                .Format("jpeg")
-                .Raw("h-200,w-300,l-image,i-logo.png,l-end");
-
             var fileStream = file.OpenReadStream();
             var memoryStream = new MemoryStream();
             fileStream.CopyTo(memoryStream);
@@ -44,16 +33,19 @@ namespace KATCinema.Utils.ImageKitHelper
                 file = bytes,
                 fileName = file.FileName
             };
-            Result resp =  await _imagekit.UploadAsync(fileCreateRequest);
+            Result uploadResponse =  await _imagekit.UploadAsync(fileCreateRequest);
 
-            string imageURL = _imagekit
-                .Url(trans)
-                .Src(resp.url)
-                .Generate();
+            return uploadResponse;
+        }   
 
-            Console.WriteLine(imageURL);
-
-            return resp.url;
+        public async Task<bool> DeletePhotoAsync(string photoId)
+        {
+            ResultDelete result = await _imagekit.DeleteFileAsync(photoId);
+            if (result.HttpStatusCode != 204)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
