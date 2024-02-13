@@ -3,8 +3,7 @@ using KATCinema.Utils.DBConnection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.EntityFrameworkCore.Internal;
-using KATCinema.Data;
+using KATCinema.Utils.ImageKitService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +31,9 @@ builder.Services.AddIdentity<User, IdentityRole>(
         options.Password.RequireNonAlphanumeric = false;
     })
     .AddEntityFrameworkStores<ApplicationDbContext>();
+// ImageKitService config.
+builder.Services.Configure<ImageKitSettings>(builder.Configuration.GetSection("ImageKitSettings"));
+// Sessions and coockies config
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
