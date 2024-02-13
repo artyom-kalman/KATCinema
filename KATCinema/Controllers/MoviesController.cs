@@ -8,16 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using KATCinema.Models;
 using KATCinema.Utils.DBConnection;
 using KATCinema.ViewModels;
+using KATCinema.Interfaces;
 
 namespace KATCinema.Controllers
 {
     public class MoviesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPhotoService _photoService;
 
-        public MoviesController(ApplicationDbContext context)
+        public MoviesController(ApplicationDbContext context, IPhotoService photoService)
         {
             _context = context;
+            _photoService = photoService;
         }
 
         // GET: Movies
@@ -52,15 +55,25 @@ namespace KATCinema.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Duration,Poster")] Movie movie)
+        public async Task<IActionResult> Create(MovieViewModel movieViewModel)
         {
             if (!ModelState.IsValid)
             {
-                return View(movie);
+                return View(movieViewModel);
             }
 
-            _context.Add(movie);
+            var posterUrl = await _photoService.UploadPhotoAsync(movieViewModel.Poster);
+
+            var newMovie = new Movie()
+            {
+                Title = movieViewModel.Title,
+                Description = movieViewModel.Description,
+                Duration = movieViewModel.Duration,
+                Poster = posterUrl,
+            };
+
+            _context.Movies.Add(newMovie);
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
