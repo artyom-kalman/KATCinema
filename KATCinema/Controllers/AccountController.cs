@@ -79,7 +79,7 @@ namespace KATCinema.Controllers
             // Попытка войти в систему
             var signInResult = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password,
                 isPersistent: true, lockoutOnFailure: false);
-                
+
             if (!signInResult.Succeeded)
             {
                 TempData["Error"] = "Что-то пошло не так";
@@ -97,7 +97,7 @@ namespace KATCinema.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
-            if(!ModelState.IsValid) return View(registerViewModel);
+            if (!ModelState.IsValid) return View(registerViewModel);
 
             var user = await _userManager.FindByEmailAsync(registerViewModel.EmailAddress);
             if (user != null)
@@ -111,7 +111,7 @@ namespace KATCinema.Controllers
                 Email = registerViewModel.EmailAddress,
                 UserName = registerViewModel.EmailAddress
             };
-            var newUserResponse = await _userManager.CreateAsync(newUser,registerViewModel.Password);
+            var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
 
             // Попытка войти в систему
             var signInResult = await _signInManager.PasswordSignInAsync(registerViewModel.EmailAddress, registerViewModel.Password,
@@ -130,13 +130,13 @@ namespace KATCinema.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
-        //public async Task<IActionResult>Reservation(int reservationId)
-        //{
-        //    List<ReservedSeat> reservedSeats = _context.ReservedSeats.Where(reservedSeat => reservedSeat.ReservationId == reservationId).ToList();
-        //    return View(reservedSeats);
-        //}
+        public async Task<IActionResult> AdministratorPanel()
+        {
+            List<Movie> movies = _context.Movies.ToList();
+            return View(movies);
+        }
     }
 }

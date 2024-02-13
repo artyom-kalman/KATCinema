@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Movie>
+        <!-- Profile widget -->
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div class="px-4 pt-0 pb-4 bg-dark">
+                <div class="media align-items-end profile-header">
+                    <div class="media-body pt-5 mb-5 text-white">
+                        <h5 class="mt-0 mb-0">@User.Identity.Name</h5>
+                        <h1>Мои билеты</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="py-4 px-4 bg-light">
+                <div class="row">
+                    @foreach(Movie movie in Model)
+                    {
+                         <div class="col-mb-6">
+                            <div class="card-body mb-4 bg-white box-shadow text-dark">
+                                <div class="row align-items-center">
+                                    <div class="col-2">
+                                        <img class="card-img-left mini-poster" src="@movie.Poster" alt="Постер для @movie.Title">
+                                    </div>
+                                    <div class="col-7">
+                                        <h3>@movie.Title</h3>
+                                        <p>@movie.Description</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <a class="btn btn-outline-danger mx-2" asp-area="" asp-controller="Account" asp-action="Login">Удалить</a>
+                                        <a class="btn btn-outline-warning mx-2" asp-area="" asp-controller="Account" asp-action="Login">Изменить</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="col-mb-6">
+                         <a class="btn btn-outline-success btn-lg   " asp-area="" asp-controller="Account" asp-action="Login">Добавить</a>
+                    </div>  
+                </div>
+            </div>
+        </div><!-- End profile widget -->
