@@ -78,6 +78,15 @@ namespace KATCinema.Controllers
             return View();
         }
 
+        [HttpGet]
+        [Route("Sessions/Create/{movieId}")]
+        public IActionResult Create(int movieId)
+        {
+            ViewData["HallName"] = new SelectList(_context.Halls, "Id", "Name");
+            ViewData["MovieTitle"] = new SelectList(_context.Movies.Where(m => m.Id == movieId), "Id", "Title");
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SessionViewModel sessionViewModel)

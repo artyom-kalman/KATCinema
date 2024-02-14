@@ -49,9 +49,10 @@
                 @Html.DisplayFor(modelItem => item.PosterId)
             </td>
             <td>
+                <a asp-action="Create" asp-controller="Sessions" asp-route-id="@item.Id">Новый сеанс</a> |
                 <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Просмотр</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a> 
             </td>
         </tr>
 }
