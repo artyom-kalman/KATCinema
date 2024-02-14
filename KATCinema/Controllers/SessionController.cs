@@ -50,11 +50,8 @@ namespace KATCinema.Controllers
                 {
                     if (Request.Form[$"{seat.Id}"] == "true")
                     {
-                        reservedSeats.Add
-                        (new ReservedSeat{
+                        reservedSeats.Add(new ReservedSeat{
                             SeatId = seat.Id,
-                            SeatNumber = 1,
-                            RowNumber =1
                         });
                     }
                 }

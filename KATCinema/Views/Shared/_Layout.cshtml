@@ -1,4 +1,15 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewData["Title"] = "Главная";
+
+    // Изменение цвета БГ если зашли на страницу Movies
+    // Это которая для админа
+    var url = Context.Request.Path.ToString();
+    string bgColorClass = (url.Contains("Sessions") || url.Contains("Movies"))
+        ? "bg-white"
+        : "bg-black";
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,7 +18,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
-<body class="bg-black">
+
+<body class="@bgColorClass">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container-fluid nav-panel">
@@ -21,12 +33,6 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
                         </li>
-                        @* <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Movie" asp-action="Index">Фильмы</a>
-                        </li> *@
-                       @*  <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Session" asp-action="Index">Сеансы</a>
-                        </li> *@
                     </ul>
                     <ul class="navbar-nav flex-grow-1 justify-content-end">
                         @if (User.Identity.IsAuthenticated)
@@ -45,9 +51,23 @@
                                     @User.Identity.Name
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
-                                        <li>
-                                            <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Index">Профиль</a>
-                                        </li>
+                                        @{
+                                            if (User.IsInRole("Admin"))
+                                            {
+                                                <li>
+                                                    <a class="dropdown-item" asp-area="" asp-controller="Movies" asp-action="Index">Управление фильмами</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" asp-area="" asp-controller="Sessions" asp-action="Index">Управление сеансами</a>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li>
+                                                    <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Index">Профиль</a>
+                                                </li>
+                                            }
+                                        }
                                         <li>
                                             <form  asp-area="" asp-controller="Account" asp-action="Logout">
                                                 <button class="dropdown-item text-danger">Выйти</button>
@@ -80,7 +100,6 @@
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2024 - KATCinema
-            @* &copy; 2024 - KATCinema - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> *@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

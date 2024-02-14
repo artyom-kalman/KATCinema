@@ -1,20 +1,17 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using KATCinema.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace KATCinema.Models
+namespace KATCinema.ViewModels
 {
-    public class Movie
+    public class MovieViewModel
     {
-        [Key]
-        public int Id { get; set; }
         [Display(Name = "Название")]
         public string Title { get; set; }
         [Display(Name = "Описание")]
         public string Description { get; set; }
         [Display(Name = "Длительность")]
         public int Duration { get; set; }
-        public string PosterUrl { get; set; }
-        public string PosterId { get; set; }
-        public List<Session>? Sessions { get; set; }
+        [Display(Name = "Постер")]
+        public IFormFile Poster { get; set; }
     }
 }
