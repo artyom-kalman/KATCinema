@@ -9,9 +9,11 @@ using KATCinema.Models;
 using KATCinema.Utils.DBConnection;
 using KATCinema.ViewModels;
 using KATCinema.Interfaces;
+using KATCinema.Utils;
 
 namespace KATCinema.Controllers
 {
+    [CustomAuthorizationFilter(Role = "Admin")]
     public class MoviesController : Controller
     {
         private readonly ApplicationDbContext _context;
