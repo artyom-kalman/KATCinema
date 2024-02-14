@@ -54,6 +54,17 @@
                                         <li>
                                             <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Index">Профиль</a>
                                         </li>
+                                        @{
+                                            if (User.IsInRole("Admin"))
+                                            {
+                                                <li>
+                                                    <a class="dropdown-item" asp-area="" asp-controller="Movies" asp-action="Index">Управление фильмами</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" asp-area="" asp-controller="Sessions" asp-action="Index">Управление сеансами</a>
+                                                </li>
+                                            }
+                                        }
                                         <li>
                                             <form  asp-area="" asp-controller="Account" asp-action="Logout">
                                                 <button class="dropdown-item text-danger">Выйти</button>
