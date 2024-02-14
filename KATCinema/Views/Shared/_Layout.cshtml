@@ -1,11 +1,12 @@
 ﻿@{
+    ViewData["Title"] = "Главная";
+
     // Изменение цвета БГ если зашли на страницу Movies
     // Это которая для админа
     var url = Context.Request.Path.ToString();
     string bgColorClass = (url.Contains("Sessions") || url.Contains("Movies"))
         ? "bg-white"
         : "bg-black";
-    ViewData["Title"] = "Главная";
 }
 
 <!DOCTYPE html>
