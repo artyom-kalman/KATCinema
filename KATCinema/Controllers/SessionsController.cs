@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using KATCinema.Models;
 using KATCinema.Utils.DBConnection;
 using KATCinema.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using KATCinema.Utils;
 
 namespace KATCinema.Controllers
 {
+    [CustomAuthorizationFilter(Role = "Admin")]
     public class SessionsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -77,12 +80,10 @@ namespace KATCinema.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MovieId,StartTime,HallId,TicketPrice")] SessionViewModel sessionViewModel)
+        public async Task<IActionResult> Create(SessionViewModel sessionViewModel)
         {
             if (ModelState.IsValid)
             {
-                //var hallId = _context.Halls.FirstOrDefault(h => h.Name == sessionViewModel.HallName).Id;
-                //var movieId= _context.Movies.FirstOrDefault(m => m.Title == sessionViewModel.MovieTitle).Id;
                 Session newSession = new Session()
                 {
                     HallId = sessionViewModel.HallId,
@@ -99,7 +100,6 @@ namespace KATCinema.Controllers
             return View(sessionViewModel);
         }
 
-        // GET: Sessions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -112,46 +112,61 @@ namespace KATCinema.Controllers
             {
                 return NotFound();
             }
-            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", session.HallId);
-            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id", session.MovieId);
-            return View(session);
+            var sessionViewModel = new SessionViewModel()
+            {
+                HallId = session.HallId,
+                Id = session.Id,
+                MovieId = session.MovieId,
+                StartTime = session.StartTime.AddHours(10),
+                TicketPrice = session.TicketPrice
+            };
+            ViewData["HallName"] = new SelectList(_context.Halls, "Id", "Name", session.HallId);
+            ViewData["MovieTitle"] = new SelectList(_context.Movies, "Id", "Title", session.MovieId);
+            return View(sessionViewModel);
         }
 
-        // POST: Sessions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MovieId,StartTime,HallId,TicketPrice")] Session session)
+        public async Task<IActionResult> Edit(int id, SessionViewModel sessionViewModel)
         {
-            if (id != session.Id)
+            if (id != sessionViewModel.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(session);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SessionExists(session.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ViewData["HallName"] = new SelectList(_context.Halls, "Id", "Name", sessionViewModel.HallId);
+                ViewData["MovieTitle"] = new SelectList(_context.Movies, "Id", "Title", sessionViewModel.MovieId);
+                return View(sessionViewModel);
             }
-            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", session.HallId);
-            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id", session.MovieId);
-            return View(session);
+
+            var session = new Session()
+            {
+                HallId = sessionViewModel.HallId,
+                Id = sessionViewModel.Id,
+                MovieId = sessionViewModel.MovieId,
+                StartTime = sessionViewModel.StartTime.ToUniversalTime(),
+                TicketPrice = sessionViewModel.TicketPrice
+            };
+
+            try
+            {
+                _context.Update(session);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SessionExists(session.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Sessions/Delete/5

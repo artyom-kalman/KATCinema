@@ -32,7 +32,9 @@ builder.Services.AddIdentity<User, IdentityRole>(
         options.Password.RequireUppercase = false;
         options.Password.RequireNonAlphanumeric = false;
     })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+//builder.Services.
 // ImageKitService config.
 builder.Services.AddScoped<IPhotoService, ImageKitService>();
 builder.Services.Configure<ImageKitSettings>(builder.Configuration.GetSection("ImageKitSettings"));
