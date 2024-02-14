@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KATCinema.Models;
 using KATCinema.Utils.DBConnection;
+using KATCinema.ViewModels;
 
 namespace KATCinema.Controllers
 {
@@ -19,14 +20,34 @@ namespace KATCinema.Controllers
             _context = context;
         }
 
-        // GET: Sessions
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Sessions.Include(s => s.Hall).Include(s => s.Movie);
-            return View(await applicationDbContext.ToListAsync());
+            var sessions = _context.Sessions
+                .Include(s => s.Hall)
+                .Include(s => s.Movie)
+                .OrderBy(s => s.StartTime)
+                .ToList();
+
+            sessions.ForEach(s =>
+            {
+                s.StartTime = s.StartTime.AddHours(10);
+            });
+
+            for (int i = 0; i < sessions.Count; i++)
+            {
+                if (sessions[i].StartTime < DateTime.Now)
+                {
+                    sessions.RemoveAt(i);
+                    i--;
+                }
+            }
+
+
+
+            return View(sessions);
         }
 
-        // GET: Sessions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,30 +67,36 @@ namespace KATCinema.Controllers
             return View(session);
         }
 
-        // GET: Sessions/Create
+        [HttpGet]
         public IActionResult Create()
         {
-            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id");
-            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id");
+            ViewData["HallName"] = new SelectList(_context.Halls, "Id", "Name");    
+            ViewData["MovieTitle"] = new SelectList(_context.Movies, "Id", "Title");
             return View();
         }
 
-        // POST: Sessions/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MovieId,StartTime,HallId,TicketPrice")] Session session)
+        public async Task<IActionResult> Create([Bind("Id,MovieId,StartTime,HallId,TicketPrice")] SessionViewModel sessionViewModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(session);
+                //var hallId = _context.Halls.FirstOrDefault(h => h.Name == sessionViewModel.HallName).Id;
+                //var movieId= _context.Movies.FirstOrDefault(m => m.Title == sessionViewModel.MovieTitle).Id;
+                Session newSession = new Session()
+                {
+                    HallId = sessionViewModel.HallId,
+                    MovieId = sessionViewModel.MovieId,
+                    StartTime = sessionViewModel.StartTime.ToUniversalTime(),
+                    TicketPrice = sessionViewModel.TicketPrice
+                };
+                _context.Add(newSession);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", session.HallId);
-            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id", session.MovieId);
-            return View(session);
+            ViewData["HallName"] = new SelectList(_context.Halls, "Id", "Name", sessionViewModel.HallId);
+            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Title", sessionViewModel.MovieId);
+            return View(sessionViewModel);
         }
 
         // GET: Sessions/Edit/5
