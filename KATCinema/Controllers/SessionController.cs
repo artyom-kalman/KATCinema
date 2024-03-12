@@ -39,24 +39,35 @@ namespace KATCinema.Controllers
         [HttpPost]
         public IActionResult Booking(int id, bool q)
         {
-            Session sesion = _context.Sessions.
+            Session session = _context.Sessions.
+                Include(session => session.Movie).
                 Include(session => session.Hall).
                 Include(session => session.Hall.Rows).
-                ThenInclude(row => row.Seats).FirstOrDefault(x => x.Id == id);
-            List<ReservedSeat> reservedSeats= new List<ReservedSeat>();
-            foreach(Row row in sesion.Hall.Rows)
+                ThenInclude(row => row.Seats).
+                Include(session => session.Reservations).
+                ThenInclude(reservation => reservation.ReservedSeats).FirstOrDefault(x => x.Id == id);
+
+            List<ReservedSeat> newReservedSeats = new List<ReservedSeat>();
+
+            foreach (Row row in session.Hall.Rows)
             {
                 foreach(Seat seat in row.Seats)
                 {
                     if (Request.Form[$"{seat.Id}"] == "true")
                     {
-                        reservedSeats.Add(new ReservedSeat{
-                            SeatId = seat.Id,
-                        });
+                        if(_context.ReservedSeats.Where(reservedSeat => reservedSeat.Reservation.SessionId == session.Id && reservedSeat.Seat.Id == seat.Id).Count() == 0)
+                            newReservedSeats.Add(new ReservedSeat{
+                                SeatId = seat.Id,
+                            });
+                        else
+                        {
+                            TempData["Error"] = "Выбранное место уже забронировано";
+                            return View(session);
+                        }
                     }
                 }
             }
-            if (reservedSeats.Count > 0)
+            if (newReservedSeats.Count > 0)
             {
                 Reservation reservation = new Reservation
                 {
@@ -65,7 +76,8 @@ namespace KATCinema.Controllers
                 };
                 _context.Reservations.AddAsync(reservation);
                 _context.SaveChanges();
-                foreach (ReservedSeat reservedSeat in reservedSeats)
+
+                foreach (ReservedSeat reservedSeat in newReservedSeats)
                 {
                     reservedSeat.ReservationId = reservation.Id;
                     _context.ReservedSeats.AddAsync(reservedSeat);

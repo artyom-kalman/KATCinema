@@ -21,6 +21,12 @@
         console.log(chekNum);
     }
 </script>
+@if (TempData["Error"] != null)
+{
+    <div class="col-md-12 alert alert-danger">
+        <span><b>Sorry!</b> - @TempData["Error"]</span>
+    </div>
+}
 <div class="album py-5 bg-dark text-white justify-content-center hall-view">
     <div class="mx-5 mb-5">
         <h1>@Model.Movie.Title</h1>
