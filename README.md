@@ -7,11 +7,11 @@ This app was made as a term project at the university. The app allows users to b
 
 ## Stack
 
-- [C#]
-- [ASP.NET]
-- [MVC]
-- [HTML/CSS/JS]
-- [Postgres]
+- C#
+- ASP.NET
+- MVC
+- HTML/CSS/JS
+- Postgres
 
 ## Screenshots
 
